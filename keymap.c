@@ -17,6 +17,8 @@
 #define CAPS 6 // caps lock
 #define AT 7 // key @
 #define HASH 8 // key #
+#define WSUP 9 // CTRL ALT UP
+#define WSDW 10 // CTRL ALT DOWN
 
   // TIMERS
 #define KEY_TAP_FAST 85
@@ -48,11 +50,11 @@
     // Otherwise, it needs KC_*
     [BASE] = KEYMAP(  // layer 0 : default
       // left hand
-      KC_EQL,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_LEFT,
+      KC_EQL,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_NONUS_BSLASH,
       KC_DELT,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_FN1,
       KC_BSPC,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
       KC_LSFT,        KC_Z,  KC_X,   KC_C,   KC_V,   KC_B,   ALL_T(KC_NO),
-      KC_LCTRL,KC_QUOT,      LALT(KC_LSFT),  KC_LEFT,KC_RGHT,
+      KC_LCTRL,KC_LALT,      LALT(KC_LSFT),  KC_LEFT,KC_RGHT,
       ALT_T(KC_APP),  KC_LGUI,
       KC_HOME,
       KC_SPC,KC_BSPC,KC_END,
@@ -61,7 +63,7 @@
       KC_FN1,    KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,             KC_BSLS,
       KC_H,   KC_J,   KC_K,   KC_L,   LT(MDIA, KC_SCLN),GUI_T(KC_QUOT),
       MEH_T(KC_NO),KC_N,   KC_M,   KC_COMM,KC_DOT, CTL_T(KC_SLSH),   KC_RSFT,
-      KC_UP,  KC_DOWN,KC_LBRC,KC_RBRC,          KC_FN1,
+      KC_UP,  KC_DOWN,KC_LBRC,M(WSUP),          M(WSDW),
       KC_LALT,        CTL_T(KC_ESC),
       KC_PGUP,
       KC_PGDN,KC_TAB, KC_ENT
@@ -134,7 +136,7 @@
       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
       KC_TRNS, KC_TRNS, KC_TRNS, KC_MS_U, KC_TRNS, KC_TRNS, KC_TRNS,
       KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS,
-      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+      LCTL(KC_SCLN), LCTL(KC_Z), LCTL(KC_T), LCTL(KC_I), LCTL(KC_COMM), LCTL(KC_V), LCTL(KC_K),
       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
       KC_TRNS, KC_TRNS,
       KC_TRNS,
@@ -235,6 +237,29 @@
           unregister_code(KC_3);
           unregister_code(KC_RALT);
         }
+        break;
+      }
+      case WSUP: {
+        if (record->event.pressed) {
+          register_code(KC_LCTRL);
+          register_code(KC_LALT);
+          register_code(KC_UP);
+          unregister_code(KC_UP);
+          unregister_code(KC_LALT);
+          unregister_code(KC_LCTRL);
+        }
+        break;
+      }
+      case WSDW: {
+        if(record->event.pressed) {
+          register_code(KC_LCTRL);
+          register_code(KC_LALT);
+          register_code(KC_DOWN);
+          unregister_code(KC_DOWN);
+          unregister_code(KC_LALT);
+          unregister_code(KC_LCTRL);
+        }
+        break;
       }
     }
     return MACRO_NONE;
