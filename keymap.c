@@ -1,4 +1,4 @@
-#include "ergodox_ez.h"
+#include "ergodox.h"
 #include "debug.h"
 #include "action_layer.h"
 
@@ -9,12 +9,14 @@
 
 // MACROS
 #define OBRACE 0 // key { or shift
-  #define CBRACE 1 // key } or shift
-  #define OBRACK 2 // key [ or left alt
-  #define CBRACK 3 // key ] or left alt
-  #define OPAR 4 // key (
-    #define CPAR 5 // key )
-  #define CAPS 6 // caps lock
+#define CBRACE 1 // key } or shift
+#define OBRACK 2 // key [ or left alt
+#define CBRACK 3 // key ] or left alt
+#define OPAR 4 // key (
+#define CPAR 5 // key )
+#define CAPS 6 // caps lock
+#define AT 7 // key @
+#define HASH 8 // key #
 
   // TIMERS
 #define KEY_TAP_FAST 85
@@ -47,16 +49,16 @@
     [BASE] = KEYMAP(  // layer 0 : default
       // left hand
       KC_EQL,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_LEFT,
-      KC_DELT,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   TG(SYMB),
+      KC_DELT,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_FN1,
       KC_BSPC,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
-      KC_LSFT,        CTL_T(KC_Z),  KC_X,   KC_C,   KC_V,   KC_B,   ALL_T(KC_NO),
-      LT(SYMB,KC_GRV),KC_QUOT,      LALT(KC_LSFT),  KC_LEFT,KC_RGHT,
+      KC_LSFT,        KC_Z,  KC_X,   KC_C,   KC_V,   KC_B,   ALL_T(KC_NO),
+      KC_LCTRL,KC_QUOT,      LALT(KC_LSFT),  KC_LEFT,KC_RGHT,
       ALT_T(KC_APP),  KC_LGUI,
       KC_HOME,
       KC_SPC,KC_BSPC,KC_END,
       // right hand
       KC_RGHT,     KC_6,   KC_7,   KC_8,   KC_9,   KC_0,             KC_MINS,
-      TG(SYMB),    KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,             KC_BSLS,
+      KC_FN1,    KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,             KC_BSLS,
       KC_H,   KC_J,   KC_K,   KC_L,   LT(MDIA, KC_SCLN),GUI_T(KC_QUOT),
       MEH_T(KC_NO),KC_N,   KC_M,   KC_COMM,KC_DOT, CTL_T(KC_SLSH),   KC_RSFT,
       KC_UP,  KC_DOWN,KC_LBRC,KC_RBRC,          KC_FN1,
@@ -89,8 +91,8 @@
     [SYMB] = KEYMAP(
       // left hand
       M(0),   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_TRNS,
-      KC_TRNS,KC_EXLM,KC_AT,  M(OBRACE),M(CBRACE),KC_PIPE,KC_TRNS,
-      KC_TRNS,KC_HASH,KC_DLR, M(OPAR),M(CPAR),KC_GRV,
+      KC_TRNS,KC_EXLM,M(AT),  M(OBRACE),M(CBRACE),KC_PIPE,KC_TRNS,
+      KC_TRNS,M(HASH),KC_DLR, M(OPAR),M(CPAR),KC_GRV,
       KC_TRNS,KC_PERC,KC_CIRC,M(OBRACK),M(CBRACK),KC_TILD,KC_TRNS,
       KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
       KC_TRNS,KC_TRNS,
@@ -217,6 +219,22 @@
           unregister_code(KC_CAPSLOCK);
         }
         break;
+      }
+      case AT: {
+        if (record->event.pressed) {
+          register_code(KC_RALT);          register_code(KC_2);
+          unregister_code(KC_2);
+          unregister_code(KC_RALT);
+        }
+        break;
+      }
+      case HASH: {
+        if (record->event.pressed) {
+          register_code(KC_RALT);
+          register_code(KC_3);
+          unregister_code(KC_3);
+          unregister_code(KC_RALT);
+        }
       }
     }
     return MACRO_NONE;
